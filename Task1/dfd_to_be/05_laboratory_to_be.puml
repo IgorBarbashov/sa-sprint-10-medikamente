@@ -1,0 +1,28 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Data Flow Diagram (to-be): Взаимодействие с лабораторией анализов
+
+actor Ресепшен
+actor Лаборатория
+
+rectangle "Работа с лабораторией" {
+
+  rectangle "Получение реестров анализов" as P5_1 #LightBlue {
+    Лаборатория --> "Excel: RegistryByDate" : Передача данных с защитой
+    note right: Данные с тегом Confidential\nРекомендуется шифрование и API
+  }
+
+  rectangle "Обработка и хранение реестров" as P5_2 #LightCoral {
+    Ресепшен --> "Excel: RegistryByDate" : Шифрованное хранение с разграничением доступа
+  }
+}
+
+legend
+  || Цвет || Значение ||
+  |<#87CEFA> Голубой |<color:black> операции с персональными и чувствительными данными |
+  |<#90EE90> Зеленый |<color:black> механизмы разграничения доступа |
+  |<#F08080> Красный |<color:black> хранилища с применяемыми мерами защиты (шифрование, аудит) |
+endlegend
+
+@enduml

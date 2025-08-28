@@ -1,0 +1,33 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Data Flow Diagram (to-be): Запись пациента к специалисту
+
+actor Пациент
+actor Ресепшен
+actor Врач
+
+rectangle "Запись пациента к специалисту" {
+
+  rectangle "Регистрация записи" as P2_1 #LightBlue {
+    Пациент --> P2_1 : Запрос записи
+    Ресепшен --> P2_1 : Ввод записи в защищенный Excel Journal-Doctor-FIO
+    note right: Тег: Confidential\nОбязателен контролируемый доступ
+  }
+
+  database "Excel: Journal-Doctor-FIO" as DS2 #LightCoral
+  P2_1 --> DS2 : Защищенное хранение записей
+
+  rectangle "Просмотр записей врачом" as P2_2 #LightGreen {
+    Врач --> DS2 : Доступ по RBAC/ABAC
+  }
+}
+
+legend
+  || Цвет || Значение ||
+  |<#87CEFA> Голубой |<color:black> операции с персональными и чувствительными данными |
+  |<#90EE90> Зеленый |<color:black> механизмы разграничения доступа |
+  |<#F08080> Красный |<color:black> хранилища с применяемыми мерами защиты (шифрование, аудит) |
+endlegend
+
+@enduml

@@ -1,0 +1,35 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Data Flow Diagram (to-be): Оплата услуг
+
+actor Пациент
+actor Кассир
+
+rectangle "Оплата услуг" {
+
+  rectangle "Прием оплаты" as P3_1 #LightBlue {
+    Пациент --> Кассир : Оплата
+    Кассир --> ККМ : Регистрация оплаты
+    note right: Финансовые данные с шифрованием по стандартам PCI DSS
+  }
+
+  rectangle "Передача информации в 1С" as P3_2 #LightGreen {
+    Кассир --> "1С: Бухгалтерия" : Защищенный ввод оплат
+    ККМ --> "1С: Бухгалтерия" : Шифрование передачи (TCP/IP, OLE)
+  }
+
+  rectangle "Ведение двойного учета" as P3_3 #LightYellow {
+    Кассир --> "Excel" : Локальный учет с ограничением доступа
+    note right: Временная мера, требует миграции на централизованный учет
+  }
+}
+
+legend
+  || Цвет || Значение ||
+  |<#87CEFA> Голубой |<color:black> операции с персональными и чувствительными данными |
+  |<#90EE90> Зеленый |<color:black> механизмы разграничения доступа |
+  |<#F08080> Красный |<color:black> хранилища с применяемыми мерами защиты (шифрование, аудит) |
+endlegend
+
+@enduml

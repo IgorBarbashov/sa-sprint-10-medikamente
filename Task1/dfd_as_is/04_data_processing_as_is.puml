@@ -1,0 +1,21 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Data Flow Diagram (as-is): Обработка медицинских данных
+
+actor Врач
+actor Ресепшен
+
+rectangle "Обработка медицинских данных" {
+
+  rectangle "Регистрация файлов пациента" as P4_1 {
+    Ресепшен --> P4_1 : Регистрация файлов пациента
+    P4_1 --> "Файловый сервер" : Сохранение файлов пациента (PDF, JPG, Excel)
+  }
+
+  rectangle "Доступ врача к журналу" as P4_2 {
+    Врач --> "Excel: Journal-Doctor-FIO" : Просмотр и редактирование своих журналов
+  }
+}
+
+@enduml

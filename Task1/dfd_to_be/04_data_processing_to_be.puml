@@ -1,0 +1,32 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Data Flow Diagram (to-be): Обработка медицинских данных
+
+actor Врач
+actor Ресепшен
+
+rectangle "Обработка медицинских данных" {
+
+  rectangle "Регистрация файлов пациента" as P4_1 #LightBlue {
+    Ресепшен --> P4_1 : Регистрация файлов
+    note right: Файлы с тегом Strictly Confidential\nОбязателен шифрованный storage
+  }
+
+  rectangle "Хранение медицинских данных" as P4_2 #LightCoral {
+    P4_1 --> "Файловый сервер" : Шифрованное хранение документов
+  }
+
+  rectangle "Доступ врача к данным" as P4_3 #LightGreen {
+    Врач --> "Excel: Journal-Doctor-FIO" : Доступ с аудитом и RBAC
+  }
+}
+
+legend
+  || Цвет || Значение ||
+  |<#87CEFA> Голубой |<color:black> операции с персональными и чувствительными данными |
+  |<#90EE90> Зеленый |<color:black> механизмы разграничения доступа |
+  |<#F08080> Красный |<color:black> хранилища с применяемыми мерами защиты (шифрование, аудит) |
+endlegend
+
+@enduml

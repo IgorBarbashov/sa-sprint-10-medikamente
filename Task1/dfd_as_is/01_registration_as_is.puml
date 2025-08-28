@@ -1,0 +1,25 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Data Flow Diagram (as-is): Регистрация пациента
+
+actor Пациент
+actor Ресепшен
+
+rectangle "Регистрация пациента" {
+
+  rectangle "Получение персональных данных" as P1_1 {
+    Пациент --> P1_1 : Передача персональных данных (ФИО, дата рождения, контакты, расширенная форма)
+  }
+
+  rectangle "Ввод данных в систему" as P1_2 {
+    P1_1 --> P1_2 : Передача данных ресепшену
+    Ресепшен --> P1_2 : Ввод данных в Excel файл 'Pacients' на файловом сервере
+  }
+
+  database "Excel: Pacients" as DS1
+
+  P1_2 --> DS1 : Сохранение данных пациента
+}
+
+@enduml

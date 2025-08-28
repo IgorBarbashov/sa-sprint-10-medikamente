@@ -1,0 +1,20 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Data Flow Diagram (as-is): Взаимодействие с лабораторией анализов
+
+actor Ресепшен
+actor Лаборатория
+
+rectangle "Работа с лабораторией" {
+
+  rectangle "Получение реестров анализов" as P5_1 {
+    Лаборатория --> "Excel: RegistryByDate" : Передача реестров анализов
+  }
+
+  rectangle "Хранение реестров" as P5_2 {
+    Ресепшен --> "Excel: RegistryByDate" : Хранение и обработка реестров анализов
+  }
+}
+
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Data Flow Diagram (as-is): Запись пациента к специалисту
+
+actor Пациент
+actor Ресепшен
+actor Врач
+
+rectangle "Запись пациента к специалисту" {
+
+  rectangle "Регистрация записи" as P2_1 {
+    Пациент --> P2_1 : Запрос записи
+    Ресепшен --> P2_1 : Ввод записи в Excel-файл Journal-Doctor-FIO на файловом сервере
+  }
+
+  database "Excel: Journal-Doctor-FIO" as DS2
+
+  P2_1 --> DS2 : Сохранение записи
+
+  rectangle "Просмотр записей врачом" as P2_2 {
+    Врач --> DS2 : Запрос и просмотр своего журнала
+  }
+}
+
+@enduml

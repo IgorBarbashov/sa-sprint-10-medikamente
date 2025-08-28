@@ -1,0 +1,26 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Data Flow Diagram (as-is): Оплата услуг
+
+actor Пациент
+actor Кассир
+
+rectangle "Оплата услуг" {
+
+  rectangle "Приём оплаты" as P3_1 {
+    Пациент --> Кассир : Оплата за услуги
+    Кассир --> ККМ : Регистрация оплаты в ККМ
+  }
+
+  rectangle "Передача информации в 1С" as P3_2 {
+    Кассир --> "1С: Бухгалтерия" : Учёт оплаты
+    ККМ --> "1С: Бухгалтерия" : Передача информации о принятии денежных средств (TCP/IP, OLE)
+  }
+
+  rectangle "Ведение двойного учёта" as P3_3 {
+    Кассир --> "Excel" : Двойной учёт платежей
+  }
+}
+
+@enduml
